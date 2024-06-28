@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RedisService } from './redis.service';
 import { Redis } from 'ioredis';
-import { REDIS_CLIENT } from './redis.constants';
+import { REDIS_CLIENT } from './redis.keys';
 @Module({
   providers: [
     {

@@ -1,14 +1,17 @@
-import { ConsoleLogger, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TrackUserDto } from './dtos/track-user.dto';
 import { RedisService } from 'src/redis/redis.service';
 import {
+  AGG_WAY_SPEED_COUNT,
+  // AGG_WAY_USERS,
+  AGG_WAY_USERS_SPEED,
   ALL_USERS_TRACKING,
   GLOBAL_TRACKING,
   USER_MOVEMENT_TRACKING,
   USER_WAYS_TRACKING,
   WAY_TRACKING,
-} from 'src/redis/redis.constants';
-import { UUID } from 'crypto';
+  WAY_USERS,
+} from '../redis/redis.keys';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +23,7 @@ export class UsersService {
       geocoordinate,
       timestamp,
       'way-id': wayId,
+      speed,
     } = trackUserDto;
 
     // 1- if a user exist in global locations remove it and add it again
@@ -31,6 +35,27 @@ export class UsersService {
     await this.addUserToAllUsersTracking(userId, geocoordinate);
     await this.addUserToWayTracking(userId, geocoordinate, wayId);
     await this.addToMovementTracking(userId, geocoordinate, timestamp);
+    await this.addWayUsers(wayId, userId);
+    await this.addWaySpeeds(wayId, speed);
+  }
+
+  private async addWayUsers(wayId: number, userId: string) {
+    await this.redisService.listPush(`${WAY_USERS}${wayId}`, userId);
+  }
+
+  private async addWaySpeeds(wayId: number, speed: number) {
+    await this.redisService.listPush(`${WAY_USERS}${wayId}`, speed.toString());
+    const agg_key = `${AGG_WAY_USERS_SPEED}${wayId}`;
+    const agg_speed_count_key = `${AGG_WAY_SPEED_COUNT}${wayId}`;
+    const agg_speed = parseFloat((await this.redisService.get(agg_key)) || '0');
+    const agg_count = parseInt(
+      (await this.redisService.get(agg_speed_count_key)) || '0',
+    );
+    await this.redisService.set(agg_key, (agg_speed + speed).toString());
+    await this.redisService.set(
+      agg_speed_count_key,
+      (agg_count + 1).toString(),
+    );
   }
 
   private async addUserToGlobalTracking(

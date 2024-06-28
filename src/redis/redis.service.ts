@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
-import { REDIS_CLIENT } from './redis.constants';
+import { REDIS_CLIENT } from './redis.keys';
 
 @Injectable()
 export class RedisService {
@@ -42,5 +42,31 @@ export class RedisService {
 
   async geodel(key: string, member: string): Promise<void> {
     await this.redisClient.zrem(key, member);
+  }
+
+  async geoRadiusByMember(
+    key: string,
+    member: string,
+    radius: number,
+    unit: string,
+  ) {
+    return this.redisClient.georadiusbymember(
+      key,
+      member,
+      radius,
+      unit,
+      'WITHDIST',
+    );
+  }
+  async listPush(key: string, value: string): Promise<void> {
+    await this.redisClient.lpush(key, value);
+  }
+
+  async listPop(key: string): Promise<string> {
+    return this.redisClient.lpop(key);
+  }
+
+  async incr(key: string): Promise<number> {
+    return this.redisClient.incr(key);
   }
 }

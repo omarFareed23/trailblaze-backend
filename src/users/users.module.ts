@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { RedisService } from 'src/redis/redis.service';
 import { Redis } from 'ioredis';
-import { REDIS_CLIENT } from 'src/redis/redis.constants';
+import { REDIS_CLIENT } from 'src/redis/redis.keys';
 
 @Module({
   controllers: [UsersController],

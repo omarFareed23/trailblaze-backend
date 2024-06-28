@@ -8,4 +8,6 @@ export class TrackUserDto {
   timestamp: number;
 
   'way-id': number;
+
+  speed: number;
 }
