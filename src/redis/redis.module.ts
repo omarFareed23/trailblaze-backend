@@ -8,8 +8,8 @@ import { REDIS_CLIENT } from './redis.constants';
       provide: REDIS_CLIENT,
       useFactory: () => {
         return new Redis({
-          host: 'localhost',
-          port: 6379,
+          host: process.env.REDIS_HOST || 'localhost',
+          port: parseInt(process.env.REDIS_PORT || '6379'),
         });
       },
     },

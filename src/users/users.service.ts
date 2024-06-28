@@ -21,12 +21,7 @@ export class UsersService {
       timestamp,
       'way-id': wayId,
     } = trackUserDto;
-    await this.redisService.geoadd(
-      'all-users-locations',
-      parseFloat(geocoordinate[0]),
-      parseFloat(geocoordinate[1]),
-      userId,
-    );
+
     // 1- if a user exist in global locations remove it and add it again
     // 2- if a user exist in the same way remove it and add it again
     // 3- if a user exist in another way remove it and add it again
