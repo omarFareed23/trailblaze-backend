@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WayDetailsModule } from './way-details/way-details.module';
 import { WayDetails } from './way-details/way-details.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { WayDetails } from './way-details/way-details.entity';
         // },
       }),
     }),
+    ScheduleModule.forRoot(),
     RedisModule,
     UsersModule,
     WayDetailsModule,

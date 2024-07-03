@@ -69,4 +69,16 @@ export class RedisService {
   async incr(key: string): Promise<number> {
     return this.redisClient.incr(key);
   }
+
+  async getKeys(pattern: string): Promise<string[]> {
+    return this.redisClient.keys(pattern);
+  }
+
+  async getSetL(key: string): Promise<number> {
+    return this.redisClient.scard(key);
+  }
+
+  async incrBy(key: string, value: number): Promise<number> {
+    return this.redisClient.incrby(key, value);
+  }
 }

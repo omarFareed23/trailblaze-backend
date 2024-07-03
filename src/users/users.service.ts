@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { TrackUserDto } from './dtos/track-user.dto';
 import { RedisService } from 'src/redis/redis.service';
 import {
+  ACC_REPORT_GEOLOCATION,
+  // ACC_REPORT_WAY,
   AGG_WAY_SPEED_COUNT,
   // AGG_WAY_USERS,
   AGG_WAY_USERS_SPEED,
@@ -12,9 +14,20 @@ import {
   WAY_TRACKING,
   WAY_USERS,
 } from '../redis/redis.keys';
+import { ReportAccidentDto } from './dtos/report-accident.dto';
 
 @Injectable()
 export class UsersService {
+  async reportAccident(reportAccidentDto: ReportAccidentDto) {
+    const { userId, geocoordinate, timestamp, wayId } = reportAccidentDto;
+
+    await this.redisService.geoadd(
+      `${ACC_REPORT_GEOLOCATION}${wayId}`,
+      parseFloat(geocoordinate[0]),
+      parseFloat(geocoordinate[1]),
+      `${userId}|${timestamp}`,
+    );
+  }
   constructor(private readonly redisService: RedisService) {}
 
   async trackUser(trackUserDto: TrackUserDto) {

@@ -7,10 +7,10 @@ export class WayDetails {
   id: number;
 
   @Column()
-  wayId: number;
+  wayId: string;
 
   @Column()
-  timestamp: Date; // You can also use Date type if you prefer
+  timestamp: number; // You can also use Date type if you prefer
 
   @Column('float')
   avgSpeed: number;
