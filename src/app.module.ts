@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WayDetailsModule } from './way-details/way-details.module';
 import { WayDetails } from './way-details/way-details.entity';
 import { ScheduleModule } from '@nestjs/schedule';
+import { RoutesModule } from './routes/routes.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     RedisModule,
     UsersModule,
     WayDetailsModule,
+    RoutesModule,
   ],
 })
 export class AppModule {}
