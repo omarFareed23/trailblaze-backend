@@ -16,4 +16,14 @@ export class UsersController {
   reportAccident(@Body() reportAccidentDto: ReportAccidentDto) {
     return this.usersService.reportAccident(reportAccidentDto);
   }
+
+  @Post('')
+  newUser() {
+    return this.usersService.newUser();
+  }
+
+  @Post('end-trip')
+  endTrip(@Body() endTripDto: { userId: string }) {
+    return this.usersService.endTrip(endTripDto.userId);
+  }
 }

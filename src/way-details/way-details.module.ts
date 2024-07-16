@@ -4,9 +4,12 @@ import { WayDetailsController } from './way-details.controller';
 import { REDIS_CLIENT } from 'src/redis/redis.keys';
 import { Redis } from 'ioredis';
 import { RedisService } from 'src/redis/redis.service';
-import { WayDetailsRepository } from './way-details.repository';
+// import { WayDetailsRepository } from './way-details.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { WayDetails } from './way-details.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([WayDetails])],
   controllers: [WayDetailsController],
   providers: [
     {
@@ -20,7 +23,7 @@ import { WayDetailsRepository } from './way-details.repository';
     },
     WayDetailsService,
     RedisService,
-    WayDetailsRepository,
+    // WayDetailsRepository,
   ],
 })
-export class WayDetailsModule {}
+export class WayDetailsModule { }

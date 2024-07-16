@@ -58,6 +58,7 @@ export class RedisService {
       'WITHDIST',
     );
   }
+
   async listPush(key: string, value: string): Promise<void> {
     await this.redisClient.lpush(key, value);
   }
@@ -75,10 +76,44 @@ export class RedisService {
   }
 
   async getSetL(key: string): Promise<number> {
-    return this.redisClient.scard(key);
+    const type = await this.redisClient.type(key);
+    if (type === 'set') {
+      return this.redisClient.scard(key);
+    } else if (type === 'list') {
+      return this.redisClient.llen(key);
+    } else if (type == 'none') {
+      return 0;
+      // }
+    } else {
+      throw new Error(`Key ${key} is not a set or list2, but a ${type}`);
+    }
   }
 
   async incrBy(key: string, value: number): Promise<number> {
     return this.redisClient.incrby(key, value);
+  }
+
+  async addToSet(key: string, value: string) {
+    return this.redisClient.sadd(key, value);
+  }
+
+  async removeFromSet(key: string, value: string) {
+    return this.redisClient.srem(key, value);
+  }
+
+  // Add the new method to get all members of a set
+  async getSetMembers(key: string): Promise<string[]> {
+    const type = await this.redisClient.type(key);
+    if (type === 'set') {
+      return this.redisClient.smembers(key);
+    } else if (type == null) {
+      return [];
+    } else {
+      throw new Error(`Key ${key} is not a set, but a ${type}`);
+    }
+  }
+
+  async del(key) {
+    return this.redisClient.del(key);
   }
 }

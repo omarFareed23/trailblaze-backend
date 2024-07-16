@@ -7,10 +7,13 @@ import { WayDetailsModule } from './way-details/way-details.module';
 import { WayDetails } from './way-details/way-details.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { RoutesModule } from './routes/routes.module';
+import { LambdaService } from './lambda/lambda.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -37,5 +40,6 @@ import { RoutesModule } from './routes/routes.module';
     WayDetailsModule,
     RoutesModule,
   ],
+  providers: [LambdaService],
 })
 export class AppModule {}

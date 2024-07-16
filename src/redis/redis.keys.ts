@@ -14,3 +14,5 @@ export const AGG_WAY_USERS_SPEED = 'agg-way-users-speed:';
 export const AGG_WAY_SPEED_COUNT = 'agg-way-speed-count:';
 // export const ACC_REPORT_WAY = 'acc-report-way:';
 export const ACC_REPORT_GEOLOCATION = 'acc-report-geolocation:';
+export const CHANGED_WAYS = 'changed-ways';
+export const WAY_EXPECTED_USERS = 'way-expected-users:';
